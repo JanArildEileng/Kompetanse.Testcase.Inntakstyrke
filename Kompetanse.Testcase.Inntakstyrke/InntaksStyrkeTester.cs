@@ -28,21 +28,13 @@ public class InntaksStyrkeTester
 
     public void SplitInntaksStyrkeTest(string inntaksStyrke, string expectedTeller, string expectedTellerEnhet, string expectedNevner, string expectedNevnerEnhet)
     {
-        (string teller, string tellerEnhet, string nevner, string nevnerEnhet) = InntaksStyrkeSplitter(inntaksStyrke);
+        var inntaksStyrkeSplitter = new InntaksStyrkeSplitter();
+
+        (string teller, string tellerEnhet, string nevner, string nevnerEnhet) = inntaksStyrkeSplitter.Split(inntaksStyrke);
 
         Assert.Equal(expectedTeller, teller);
         Assert.Equal(expectedTellerEnhet, tellerEnhet);
         Assert.Equal(expectedNevner, nevner);
         Assert.Equal(expectedNevnerEnhet, nevnerEnhet);
     }
-  
-    private (string teller, string tellerEnhet, string nevner, string nevnerEnhet) InntaksStyrkeSplitter(string inntaksStyrke)
-    {
-        //TODO implementer denne !!!
-        //Denne koden kan flyttes i en egen klasse eller hva som helst....
-
-        throw new NotImplementedException("Implementer InntaksStyrkeSplitter() !!!");
-      //  return (null, null, null, null);
-    }
-
 }
