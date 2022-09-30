@@ -20,13 +20,11 @@ namespace Kompetanse.Testcase.Inntakstyrke
         {
             if(str == null) throw new ArgumentNullException("str");
 
-            (this.Teller, this.TellerEnhet, this.Nevner, this.NevnerEnhet) = Split(str);
+            this.Teller = GetNumerator(str, _allowedCharsInNumber);
+            this.TellerEnhet = GetNumerator(str, _allowedCharsInUnit);
+            this.Nevner = GetDenominator(str, _allowedCharsInNumber);
+            this.NevnerEnhet = GetDenominator(str, _allowedCharsInUnit);
         }
-
-        private (string? numerator, string? numeratorUnit, string? denominator, string? denominatorUnit) Split(string str)
-        {
-            return (GetNumerator(str, _allowedCharsInNumber), GetNumerator(str, _allowedCharsInUnit), GetDenominator(str, _allowedCharsInNumber), GetDenominator(str, _allowedCharsInUnit));            
-        }        
                 
         private string? GetNumerator(string str, string allowedChars)
         {
