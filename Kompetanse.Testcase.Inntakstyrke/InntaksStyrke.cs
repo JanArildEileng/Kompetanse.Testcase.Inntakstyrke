@@ -8,54 +8,56 @@ namespace Kompetanse.Testcase.Inntakstyrke
 {
     public class InntaksStyrkeSplitter
     {
+        private const string _allowedCharsInNumber = "01234567890.,";
+        private const string _allowedCharsInUnit = "abcdefghijklmnopqrstuvwxyzæøå%";
+
         public (string? numerator, string? numeratorUnit, string? denominator, string? denominatorUnit) Split(string str)
         {
-            var numerator = GetNumerator(str, "01234567890.,");
-            var numeratorUnit = GetNumerator(str, "abcdefghijklmnopqrstuvwxyzæøå%");
-            var denominator = GetDenominator(str, "01234567890.,");
-            var denominatorUnit = GetDenominator(str, "abcdefghijklmnopqrstuvwxyzæøå%");
-
-            return (numerator, numeratorUnit, denominator, denominatorUnit);            
+            return (GetNumerator(str, _allowedCharsInNumber), GetNumerator(str, _allowedCharsInUnit), GetDenominator(str, _allowedCharsInNumber), GetDenominator(str, _allowedCharsInUnit));            
         }        
                 
         private string? GetNumerator(string str, string allowedChars)
         {
-            var backslashIndex = str.IndexOf("/");
-
-            var numerator = SplitAndRejoin(backslashIndex > -1 ? str.Substring(0, backslashIndex) : str, allowedChars);
+            if (HasDenominator(str))
+            {                
+                str = str.Substring(0, str.IndexOf("/"));
+            }
+           
+            var numerator = SplitAndRejoin(str, allowedChars);
 
             return string.IsNullOrEmpty(numerator) ? null : numerator; 
         }
 
         private string? GetDenominator(string str, string allowedChars)
         {
-            if (!HasDenominator(str))
+            if (HasDenominator(str))
             {
-                return null; 
+                str = str.Substring(str.IndexOf("/"));
+
+                var denominator = SplitAndRejoin(str, allowedChars);
+
+                return string.IsNullOrEmpty(denominator) ? "1" : denominator;
             }
 
-            var backslashIndex = str.IndexOf("/");
-            
-            var denominator = SplitAndRejoin(backslashIndex > -1 ? str.Substring(backslashIndex) : str, allowedChars);            
-
-            return string.IsNullOrEmpty(denominator) ? "1" : denominator;
+            return null; 
         }
 
         private string SplitAndRejoin(string str, string allowedChars)
         {
-            var originalListOfSplitStrings = str.Split("+");
-            var newListOfSplitStrings = new List<string>();
+            var strArray = str.Split("+");
+            var strList = new List<string>();
 
-            for (int i = 0; i < originalListOfSplitStrings.Length; i++)
+            for (int i = 0; i < strArray.Length; i++)
             {
-                var splitStr = new String(originalListOfSplitStrings[i].Where(c => allowedChars.Contains(c)).ToArray());
-                if (!string.IsNullOrWhiteSpace(splitStr))
+                var result = new String(strArray[i].Where(c => allowedChars.Contains(c)).ToArray());
+
+                if (!string.IsNullOrWhiteSpace(result))
                 {
-                    newListOfSplitStrings.Add(splitStr);
+                    strList.Add(result);
                 }
             }
 
-            return String.Join("|", newListOfSplitStrings.ToArray());
+            return String.Join("|", strList.ToArray());
         }       
 
         private bool HasDenominator(string str)
