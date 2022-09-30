@@ -6,12 +6,24 @@ using System.Threading.Tasks;
 
 namespace Kompetanse.Testcase.Inntakstyrke
 {
-    public class InntaksStyrkeSplitter
+    public class InntaksStyrke
     {
         private const string _allowedCharsInNumber = "01234567890.,";
         private const string _allowedCharsInUnit = "abcdefghijklmnopqrstuvwxyzæøå%";
 
-        public (string? numerator, string? numeratorUnit, string? denominator, string? denominatorUnit) Split(string str)
+        public string? Teller;
+        public string? TellerEnhet;
+        public string? Nevner;
+        public string? NevnerEnhet;
+
+        public InntaksStyrke(string str)
+        {
+            if(str == null) throw new ArgumentNullException("str");
+
+            (this.Teller, this.TellerEnhet, this.Nevner, this.NevnerEnhet) = Split(str);
+        }
+
+        private (string? numerator, string? numeratorUnit, string? denominator, string? denominatorUnit) Split(string str)
         {
             return (GetNumerator(str, _allowedCharsInNumber), GetNumerator(str, _allowedCharsInUnit), GetDenominator(str, _allowedCharsInNumber), GetDenominator(str, _allowedCharsInUnit));            
         }        

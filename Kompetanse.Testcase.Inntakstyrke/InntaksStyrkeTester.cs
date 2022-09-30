@@ -26,15 +26,13 @@ public class InntaksStyrkeTester
     [InlineData("0,2mg/ml", "0,2", "mg", "1", "ml")]
     [InlineData("16/12,5mg", "16", null, "12,5", "mg")]
 
-    public void SplitInntaksStyrkeTest(string inntaksStyrke, string expectedTeller, string expectedTellerEnhet, string expectedNevner, string expectedNevnerEnhet)
+    public void SplitInntaksStyrkeTest(string inntaksStyrkeStr, string expectedTeller, string expectedTellerEnhet, string expectedNevner, string expectedNevnerEnhet)
     {
-        var inntaksStyrkeSplitter = new InntaksStyrkeSplitter();
+        var inntaksStyrke = new InntaksStyrke(inntaksStyrkeStr);
 
-        (string teller, string tellerEnhet, string nevner, string nevnerEnhet) = inntaksStyrkeSplitter.Split(inntaksStyrke);
-
-        Assert.Equal(expectedTeller, teller);
-        Assert.Equal(expectedTellerEnhet, tellerEnhet);
-        Assert.Equal(expectedNevner, nevner);
-        Assert.Equal(expectedNevnerEnhet, nevnerEnhet);
+        Assert.Equal(expectedTeller, inntaksStyrke.Teller);
+        Assert.Equal(expectedTellerEnhet, inntaksStyrke.TellerEnhet);
+        Assert.Equal(expectedNevner, inntaksStyrke.Nevner);
+        Assert.Equal(expectedNevnerEnhet, inntaksStyrke.NevnerEnhet);
     }
 }
