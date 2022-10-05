@@ -11,11 +11,6 @@ namespace Kompetanse.Testcase.Inntakstyrke;
 
 public class InntaksStyrkeTester
 {
-    public InntaksStyrkeTester()
-    {
-
-    }
-
     /* alle testcase-data er hentet fra Reseptregisterets produksjonssystem */
     [Theory]
     [InlineData("", null, null, null, null)]
@@ -25,24 +20,13 @@ public class InntaksStyrkeTester
     [InlineData("150mg+1%", "150|1", "mg|%", null, null)]
     [InlineData("0,2mg/ml", "0,2", "mg", "1", "ml")]
     [InlineData("16/12,5mg", "16", null, "12,5", "mg")]
-
     public void SplitInntaksStyrkeTest(string inntaksStyrke, string expectedTeller, string expectedTellerEnhet, string expectedNevner, string expectedNevnerEnhet)
     {
-        (string teller, string tellerEnhet, string nevner, string nevnerEnhet) = InntaksStyrkeSplitter(inntaksStyrke);
+        var inntaksstyrke = new Inntaksstyrke(inntaksStyrke);
 
-        Assert.Equal(expectedTeller, teller);
-        Assert.Equal(expectedTellerEnhet, tellerEnhet);
-        Assert.Equal(expectedNevner, nevner);
-        Assert.Equal(expectedNevnerEnhet, nevnerEnhet);
+        Assert.Equal(expectedTeller, inntaksstyrke.Teller);
+        Assert.Equal(expectedTellerEnhet, inntaksstyrke.TellerEnhet);
+        Assert.Equal(expectedNevner, inntaksstyrke.Nevner);
+        Assert.Equal(expectedNevnerEnhet, inntaksstyrke.NevnerEnhet);
     }
-  
-    private (string teller, string tellerEnhet, string nevner, string nevnerEnhet) InntaksStyrkeSplitter(string inntaksStyrke)
-    {
-        //TODO implementer denne !!!
-        //Denne koden kan flyttes i en egen klasse eller hva som helst....
-
-        throw new NotImplementedException("Implementer InntaksStyrkeSplitter() !!!");
-      //  return (null, null, null, null);
-    }
-
 }
